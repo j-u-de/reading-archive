@@ -1,0 +1,2 @@
+import {NextResponse} from 'next/server';
+export async function POST(req:Request){try{const b=await req.json();if(!b||typeof b.sessionId!=='string'||typeof b.note!=='object')return NextResponse.json({error:'sessionId and note are required'},{status:400});return NextResponse.json({sessionId:b.sessionId,note:b.note,userEdited:true,version:Number(b.version||1),savedAt:new Date().toISOString()},{status:201})}catch{return NextResponse.json({error:'Invalid note data'},{status:400})}}

@@ -1,0 +1,2 @@
+import {NextResponse} from 'next/server';
+export async function POST(req:Request){try{const d=await req.json();if(!d||typeof d.title!=='string'||!d.title.trim())return NextResponse.json({error:'title is required'},{status:400});return NextResponse.json({backgroundImageUrl:d.backgroundImageUrl||null,layoutVersion:'v1',ratio:'3:4',title:d.title.trim(),author:d.author||'',dates:{startedAt:d.startedAt||null,finishedAt:d.finishedAt||null}})}catch{return NextResponse.json({error:'Invalid poster data'},{status:400})}}

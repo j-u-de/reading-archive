@@ -1,0 +1,1 @@
+"use client"; export default function Error({reset}:{error:Error&{digest?:string};reset:()=>void}){return <main className="shell"><p className="eyebrow">READING ARCHIVE</p><h1>出现了一点问题</h1><p className="muted">你的阅读数据不会因此丢失，可以重试。</p><button className="primary" onClick={()=>reset()}>重试</button></main>}

@@ -1,0 +1,2 @@
+import {NextResponse} from 'next/server'; import {textAIProvider} from '../../../../lib/providers/ai';
+export async function POST(req:Request){try{const body=await req.json();if(!body||typeof body.title!=='string'||!body.title.trim())return NextResponse.json({error:'title is required'},{status:400});const topics=await textAIProvider.generateTopics({...body,title:body.title.trim()});return NextResponse.json({topics:Array.from(new Set(topics.map(t=>t.trim()).filter(Boolean))).slice(0,5)})}catch{return NextResponse.json({topics:[],retryable:true})}}
