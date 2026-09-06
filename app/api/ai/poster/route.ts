@@ -11,12 +11,19 @@ export async function POST(req: Request) {
     const config = readAIConfigFromRequest(req);
     const existingVisuals = Array.isArray(body.existingVisuals) ? body.existingVisuals.slice(0, 12) : [];
     const ai = createTextAIProvider(config);
+    const poster = await ai.generatePoster({
+      title: body.title.trim().slice(0, 200),
+      author: typeof body.author === "string" ? body.author.trim().slice(0, 200) : undefined,
+      description: typeof body.description === "string" ? body.description.trim().slice(0, 600) : undefined,
+      tone: typeof body.tone === "string" ? body.tone.trim().slice(0, 40) : undefined,
+      existingVisuals,
+    });
     const visual = await ai.generatePosterVisualBrief({
       title: body.title.trim().slice(0, 200),
       author: typeof body.author === "string" ? body.author.trim().slice(0, 200) : undefined,
       description: typeof body.description === "string" ? body.description.trim().slice(0, 600) : undefined,
       tone: typeof body.tone === "string" ? body.tone.trim().slice(0, 40) : undefined,
-      themes: Array.isArray(body.themes) ? body.themes.map((x: unknown) => String(x).trim()).filter(Boolean).slice(0, 6) : [],
+      themes: poster.tags,
       existingVisuals,
     });
     const image = await createImageAIProvider(config).generateBackground({
@@ -24,7 +31,7 @@ export async function POST(req: Request) {
       author: typeof body.author === "string" ? body.author.trim().slice(0, 200) : undefined,
       description: typeof body.description === "string" ? body.description.trim().slice(0, 600) : undefined,
       tone: typeof body.tone === "string" ? body.tone.trim().slice(0, 40) : undefined,
-      themes: Array.isArray(body.themes) ? body.themes.map((x: unknown) => String(x).trim()).filter(Boolean).slice(0, 6) : [],
+      themes: poster.tags,
       prompt: visual.prompt,
       style: visual.style,
       mood: visual.mood,
@@ -33,8 +40,8 @@ export async function POST(req: Request) {
       direction: visual.direction,
       existingVisuals,
     });
-    return NextResponse.json({ ...image, visual, version: 2 });
+    return NextResponse.json({ ...poster, visual, imageUrl: image.url, imagePrompt: image.prompt, version: 2 });
   } catch {
-    return NextResponse.json({ url: "", retryable: true }, { status: 503 });
+    return NextResponse.json({ error: "AI 服务暂不可用", retryable: true }, { status: 503 });
   }
 }

@@ -1,0 +1,51 @@
+name: Deploy to Cloudflare
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: cloudflare-deploy-main
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      AI_PROVIDER: ${{ secrets.AI_PROVIDER }}
+      AI_BASE_URL: ${{ secrets.AI_BASE_URL }}
+      AI_MODEL: ${{ secrets.AI_MODEL }}
+      AI_API_KEY: ${{ secrets.AI_API_KEY }}
+      TEXT_AI_API_KEY: ${{ secrets.TEXT_AI_API_KEY }}
+      IMAGE_AI_BASE_URL: ${{ secrets.IMAGE_AI_BASE_URL }}
+      IMAGE_AI_MODEL: ${{ secrets.IMAGE_AI_MODEL }}
+      IMAGE_AI_API_KEY: ${{ secrets.IMAGE_AI_API_KEY }}
+      IMAGE_AI_DASHSCOPE_BASE_URL: ${{ secrets.IMAGE_AI_DASHSCOPE_BASE_URL }}
+      IMAGE_AI_DASHSCOPE_MODEL: ${{ secrets.IMAGE_AI_DASHSCOPE_MODEL }}
+      IMAGE_AI_DASHSCOPE_API_KEY: ${{ secrets.IMAGE_AI_DASHSCOPE_API_KEY }}
+      WEB_SEARCH_API_KEY: ${{ secrets.WEB_SEARCH_API_KEY }}
+      PYTHON_PROXY_URL: ${{ secrets.PYTHON_PROXY_URL }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build and deploy
+        run: pnpm run deploy:cloudflare

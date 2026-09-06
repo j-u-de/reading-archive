@@ -1,2 +1,15 @@
-import {NextResponse} from 'next/server'; import {textAIProvider} from '../../../../lib/providers/ai';
-export async function POST(req:Request){try{const body=await req.json();if(!body||typeof body.title!=='string'||!body.title.trim())return NextResponse.json({error:'title is required'},{status:400});return NextResponse.json({...await textAIProvider.generateReadingNote({...body,title:body.title.trim().slice(0,200)}),version:1,userEdited:false})}catch{return NextResponse.json({error:'AI 服务暂不可用',retryable:true},{status:503})}}
+import { NextResponse } from "next/server";
+import { createTextAIProvider, readAIConfigFromRequest } from "../../../../lib/providers/ai";
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    if (!body || typeof body.title !== "string" || !body.title.trim()) {
+      return NextResponse.json({ error: "title is required" }, { status: 400 });
+    }
+    const ai = createTextAIProvider(readAIConfigFromRequest(req));
+    return NextResponse.json({ ...(await ai.generateReadingNote({ ...body, title: body.title.trim().slice(0, 200) })), version: 1, userEdited: false });
+  } catch {
+    return NextResponse.json({ error: "AI 服务暂不可用", retryable: true }, { status: 503 });
+  }
+}

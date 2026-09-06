@@ -1,1 +1,34 @@
-{"scripts":{"dev":"npx next dev -p 3000","dev:clean":"powershell -NoProfile -Command \"if (Test-Path .next-dev) { Remove-Item -LiteralPath .next-dev -Recurse -Force }\"; npx next dev -p 3000","build":"npx next build","start":"npx next start","lint":"npx next lint","typecheck":"npx tsc --noEmit","test":"node --test --experimental-strip-types tests/*.test.ts"},"dependencies":{"@mcpcn/mcp-book-info":"^1.0.5","lucide-react":"^0.468.0","mcp-open-library":"^1.2.2","next":"14.2.5","react":"18.3.1","react-dom":"18.3.1"},"devDependencies":{"@types/node":"^20.14.12","@types/react":"^18.3.3","@types/react-dom":"^18.3.0","eslint":"^8.57.0","eslint-config-next":"14.2.5","typescript":"^5.5.4"}}
+{
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "dev": "pnpm exec next dev -p 3000",
+    "dev:clean": "powershell -NoProfile -Command \"if (Test-Path .next-dev) { Remove-Item -LiteralPath .next-dev -Recurse -Force }\"; pnpm exec next dev -p 3000",
+    "build": "pnpm exec next build",
+    "start": "pnpm exec next start",
+    "lint": "pnpm exec next lint",
+    "typecheck": "pnpm exec tsc --noEmit",
+    "test": "node --test --experimental-strip-types tests/*.test.ts",
+    "build:cloudflare": "pnpm exec opennextjs-cloudflare build",
+    "preview:cloudflare": "pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare preview",
+    "deploy:cloudflare": "pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare deploy",
+    "cf-typegen": "pnpm exec wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+  },
+  "dependencies": {
+    "@mcpcn/mcp-book-info": "^1.0.5",
+    "lucide-react": "^0.468.0",
+    "mcp-open-library": "^1.2.2",
+    "next": "15.5.24",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@opennextjs/cloudflare": "^1.20.6",
+    "@types/node": "^20.14.12",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "15.5.24",
+    "typescript": "^5.5.4",
+    "wrangler": "^4.129.0"
+  }
+}

@@ -2,23 +2,28 @@ import { NextResponse } from "next/server";
 import { syncBooks, syncSessions, syncArchiveExtras, supabaseConfigured } from "../../../lib/supabase-adapter";
 
 export async function POST(request: Request) {
-  if (!supabaseConfigured()) return NextResponse.json({ mode: "local", synced: false, reason: "Supabase 未配置" });
   try {
     const body = await request.json();
     const books = Array.isArray(body?.books) ? body.books : [];
     const sessions = Array.isArray(body?.sessions) ? body.sessions : [];
-    const [bookResult, sessionResult, extraResult] = await Promise.all([syncBooks(books), syncSessions(sessions), syncArchiveExtras(body)]);
-    return NextResponse.json({ mode: "supabase", synced: true, books: bookResult.count, sessions: sessionResult.count, extras: extraResult.count });
+    if (supabaseConfigured()) {
+      const [bookResult, sessionResult, extraResult] = await Promise.all([syncBooks(books), syncSessions(sessions), syncArchiveExtras(body)]);
+      return NextResponse.json({ mode: "supabase", synced: true, books: bookResult.count, sessions: sessionResult.count, extras: extraResult.count });
+    }
+    return NextResponse.json({ mode: "local", synced: false, retryable: true, books: books.length, sessions: sessions.length, extras: Array.isArray(body?.posters) ? body.posters.length : 0 });
   } catch {
     return NextResponse.json({ mode: "local", synced: false, retryable: true }, { status: 503 });
   }
 }
 
 export async function GET() {
-  if (!supabaseConfigured()) return NextResponse.json({ mode: "local", synced: false, books: [], sessions: [] });
   try {
-    const { readCloudArchive } = await import("../../../lib/supabase-adapter");
-    return NextResponse.json({ mode: "supabase", synced: true, ...(await readCloudArchive()) });
+    if (supabaseConfigured()) {
+      const { readCloudArchive } = await import("../../../lib/supabase-adapter");
+      const cloud = await readCloudArchive();
+      return NextResponse.json({ mode: "supabase", synced: true, ...cloud });
+    }
+    return NextResponse.json({ mode: "local", synced: false, retryable: true });
   } catch {
     return NextResponse.json({ mode: "local", synced: false, retryable: true }, { status: 503 });
   }

@@ -1,1 +1,3 @@
-export default function NotFound(){return <main className="shell"><p className="eyebrow">READING ARCHIVE</p><h1>页面不存在</h1><p className="muted">返回书架继续你的阅读记录。</p><a className="primary" href="/">返回书架</a></main>}
+import Link from "next/link";
+
+export default function NotFound(){return <main className="shell"><p className="eyebrow">READING ARCHIVE</p><h1>页面不存在</h1><p className="muted">返回书架继续你的阅读记录。</p><Link className="primary" href="/">返回书架</Link></main>}

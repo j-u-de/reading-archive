@@ -39,3 +39,15 @@ python reading_archive_api.py
 默认使用浏览器本地 `reading-archive-v2` 档案，支持离线记录与 JSON/CSV 导出。配置 `NEXT_PUBLIC_SUPABASE_URL` 和服务端 `SUPABASE_SERVICE_ROLE_KEY` 后，可通过 `POST /api/sync` 同步 Book 与 ReadingSession；未配置或同步失败时接口明确返回 `local` 模式，不会阻塞本地阅读流程。
 
 首次使用云端登录时，在 Supabase 控制台 Authentication → Users → Add user 创建 Owner 用户，然后访问 `/login` 登录。令牌只保存在当前浏览器中；`service_role` 密钥只能放在服务端环境变量。
+
+## Cloudflare 部署
+
+这个项目已经补好 Cloudflare/OpenNext 部署骨架，适合部署到 Cloudflare Workers。
+
+完整步骤见 [docs/deploy-cloudflare.md](./docs/deploy-cloudflare.md)。
+
+本地类型生成可用：
+
+```bash
+pnpm run cf-typegen
+```

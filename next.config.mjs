@@ -1,8 +1,18 @@
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+
 /** @type {import('next').NextConfig} */
-import { PHASE_PRODUCTION_BUILD } from 'next/constants.js';
-export default (phase) => ({
-  // Keep dev and production artifacts isolated. Running `next build` must never
-  // invalidate an active Chrome development preview.
-  distDir: phase === PHASE_PRODUCTION_BUILD ? '.next-build' : '.next-dev',
-  experimental: { typedRoutes: false }
-});
+export default {
+  typedRoutes: false,
+  images: {
+    unoptimized: true,
+  },
+  serverExternalPackages: ["sharp"],
+  webpack(config) {
+    config.resolve ??= {};
+    config.resolve.alias ??= {};
+    config.resolve.alias["react-dom/server.edge"] = require.resolve("react-dom/server.browser");
+    return config;
+  },
+};
