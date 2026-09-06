@@ -1,17 +1,17 @@
 {
+  "name": "reading-archive",
+  "version": "2.0.0",
+  "private": true,
+  "engines": { "node": ">=22.18.0" },
   "packageManager": "pnpm@11.19.0",
   "scripts": {
-    "dev": "pnpm exec next dev -p 3000",
+    "dev": "next dev -p 3000",
     "dev:clean": "powershell -NoProfile -Command \"if (Test-Path .next-dev) { Remove-Item -LiteralPath .next-dev -Recurse -Force }\"; pnpm exec next dev -p 3000",
-    "build": "pnpm exec next build",
-    "start": "pnpm exec next start",
-    "lint": "pnpm exec next lint",
-    "typecheck": "pnpm exec tsc --noEmit",
-    "test": "node --test --experimental-strip-types tests/*.test.ts",
-    "build:cloudflare": "pnpm exec opennextjs-cloudflare build",
-    "preview:cloudflare": "pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare preview",
-    "deploy:cloudflare": "pnpm exec opennextjs-cloudflare build && pnpm exec opennextjs-cloudflare deploy",
-    "cf-typegen": "pnpm exec wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint app components lib pages",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --experimental-strip-types tests/*.test.ts"
   },
   "dependencies": {
     "@mcpcn/mcp-book-info": "^1.0.5",
@@ -22,13 +22,11 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.20.6",
     "@types/node": "^20.14.12",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "eslint": "^8.57.0",
     "eslint-config-next": "15.5.24",
-    "typescript": "^5.5.4",
-    "wrangler": "^4.129.0"
+    "typescript": "^5.5.4"
   }
 }

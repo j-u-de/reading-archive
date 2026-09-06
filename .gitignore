@@ -15,4 +15,6 @@ npm.cmd
 .env
 .env.local
 .env.*.local
-data/
+data/*
+!data/reading-archive-sync.json
+!data/README.md
