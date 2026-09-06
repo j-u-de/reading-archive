@@ -2,7 +2,7 @@
 
 Reading Archive 是一个面向个人长期阅读的响应式 Web App。它把书架、阅读过程、进度记录、统计分析、AI 阅读辅助和阅读海报放在同一套数据模型中。本地阅读记录不依赖 AI 或云端服务；搜索、AI 和云同步需要网络。本项目包含 PWA manifest 和 Service Worker 基础设施，但目前不保证完整离线启动。
 
-产品需求基准见 [PRD.md](./PRD.md)，变更时间线见 [CHANGELOG.md](./CHANGELOG.md)，关键技术取舍见 [DECISIONS.md](./DECISIONS.md)。本版本是同一仓库中的 2.0 版本，延续 1.0 的数据模型并补充完整的阅读工作流与视觉体验。
+产品需求基准见 [PRD.md](./docs/project/PRD.md)，变更时间线见 [CHANGELOG.md](./docs/development/CHANGELOG.md)，关键技术取舍见 [DECISIONS.md](./docs/development/DECISIONS.md)。本版本是同一仓库中的 2.0 版本，延续 1.0 的数据模型并补充完整的阅读工作流与视觉体验。
 
 ## 版本入口
 
@@ -12,7 +12,7 @@ Reading Archive 是一个面向个人长期阅读的响应式 Web App。它把�
 | 2.0 | [codex/v2.0](https://github.com/j-u-de/reading-archive/tree/codex/v2.0) | [v2.0.0](https://github.com/j-u-de/reading-archive/tree/v2.0.0) | 当前本地完善版本、说明文档和经项目所有者授权上传的书架档案 |
 | 最新 | [main](https://github.com/j-u-de/reading-archive) | 随后续开发推进 | 本次与 2.0 发布内容一致 |
 
-每个分支都包含完整项目。通过 GitHub 分支选择器切换版本，或进入标签页面下载对应版本 ZIP。版本规则与独立下载方式见 [版本管理说明](./docs/VERSIONS.md)。
+每个分支都包含完整项目。通过 GitHub 分支选择器切换版本，或进入标签页面下载对应版本 ZIP。版本规则与独立下载方式见 [版本管理说明](./docs/project/VERSIONS.md)。
 
 ## 可以实现什么
 
@@ -39,7 +39,7 @@ Reading Archive 是一个面向个人长期阅读的响应式 Web App。它把�
 
 ## 开发周期与版本边界
 
-技术决策文档最早记录于 2026-08-30，首个 Git 提交为 2026-08-31，2.0 整理日期为 2026-09-06，记录覆盖约一周。这是可追溯的日历区间，不是精确工时。1.0 已包含基础书架、阅读会话、统计、AI 和同步适配；2.0 在此基础上深化海报、主题分析、图片存储和 UI，并升级运行依赖。详见 [开发过程记录](./docs/DEVELOPMENT.md)；没有逐日证据的改动按阶段记录。
+技术决策文档最早记录于 2026-08-30，首个 Git 提交为 2026-08-31，2.0 整理日期为 2026-09-06，记录覆盖约一周。这是可追溯的日历区间，不是精确工时。1.0 已包含基础书架、阅读会话、统计、AI 和同步适配；2.0 在此基础上深化海报、主题分析、图片存储和 UI，并升级运行依赖。详见 [开发过程记录](./docs/development/DEVELOPMENT.md)；没有逐日证据的改动按阶段记录。
 
 2.0 保留已有 1.0 的书籍与阅读会话概念，不改变本地档案的核心结构。部署实验相关配置已从项目剥离，当前仓库聚焦本地应用开发和可移植的应用源码；部署平台配置不属于本版本的应用运行依赖。
 
@@ -118,3 +118,5 @@ python reading_archive_api.py
 | `scripts/` | QA、AI 检查和本地服务脚本 |
 | `tests/` | 数据迁移和核心逻辑测试 |
 | `public/` | 静态资源 |
+
+更细的目录职责见各代码目录下的 `README.md`，约束规范集中在 `docs/constraints/`，开发记录集中在 `docs/development/`，产品和版本资料集中在 `docs/project/`。
